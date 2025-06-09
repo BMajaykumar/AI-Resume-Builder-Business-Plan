@@ -1,0 +1,7 @@
+# Validation Prompts for AI Resume Builder Project
+
+1. Summarize hiring trends in India for fresh graduates using recent market reports.
+2. Analyze top resume builders (Zety, Canva, Resume.io) and their key features.
+3. What are the gaps in Tier 2/3 Indian cities regarding resume optimization tools?
+4. Based on Statista/LinkedIn data, how is AI adoption growing in recruitment?
+5. What is the current demand for ATS-optimized resumes in the Indian job market?
