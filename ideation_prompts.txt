@@ -1,7 +1,0 @@
-# Ideation Prompts for Generative AI Business Plan
-
-1. What are the top problems fresh graduates face when applying for jobs?
-2. How can AI assist users in writing better resumes automatically?
-3. Can we combine LLMs with real-time job listings to personalize career advice?
-4. Generate 5 innovative business ideas using AI for the education or employment sector.
-5. What products can use GPT-like models to help Indian users apply for jobs efficiently?
