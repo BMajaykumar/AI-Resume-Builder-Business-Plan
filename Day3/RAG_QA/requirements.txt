@@ -1,8 +1,10 @@
 torch
 langchain
+langchain-community
 faiss-cpu
-openai
+google-generativeai
 sentence-transformers
 streamlit
 pypdf
 python-dotenv
+langchain-google-genai

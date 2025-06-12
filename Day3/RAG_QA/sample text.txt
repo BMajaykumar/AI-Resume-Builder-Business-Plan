@@ -1,0 +1,7 @@
+sample_questions = [
+    "What are the main components of a RAG model, and how do they interact?",
+    "What are the two sub-layers in each encoder layer of the Transformer model?",
+    "Explain how positional encoding is implemented in Transformers and why it is necessary.",
+    "Describe the concept of multi-head attention in the Transformer architecture. Why is it beneficial?",
+    "What is few-shot learning, and how does GPT-3 implement it during inference?"
+] 

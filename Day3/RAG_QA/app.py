@@ -1,7 +1,7 @@
 import streamlit as st
 from src.rag_pipeline import answer_question
 
-st.title("RAG QA System - AI Research Papers")
+st.title("RAG QA System - AI Research Papers (Gemini)")
 query = st.text_input("Ask a question about AI research papers")
 
 if query:

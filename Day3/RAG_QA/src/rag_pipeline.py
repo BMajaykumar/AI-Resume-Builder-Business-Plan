@@ -1,8 +1,16 @@
 from langchain.chains import RetrievalQA
-from langchain.chat_models import ChatOpenAI
+from langchain_google_genai import GoogleGenerativeAI
 from .retriever import load_vectorstore
 
-llm = ChatOpenAI(temperature=0, model_name="gemini-2.0-flash")
+import os
+from dotenv import load_dotenv
+load_dotenv()
+
+llm = GoogleGenerativeAI(
+    model="gemini-2.0-flash",
+    api_key=os.getenv("GOOGLE_API_KEY"),
+    temperature=0.2
+)
 
 vectorstore = load_vectorstore()
 retriever = vectorstore.as_retriever(search_kwargs={"k": 3})
