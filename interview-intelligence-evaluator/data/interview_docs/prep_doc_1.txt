@@ -1,0 +1,25 @@
+AI Agents:
+An AI agent is a software entity that perceives its environment, makes decisions, and takes actions to achieve specific goals autonomously. These agents can be reactive (responding to inputs), deliberative (reasoning with a model), or hybrid.
+
+Key Properties of AI Agents:
+1. Autonomy – operates without human intervention.
+2. Perception – gathers data from the environment.
+3. Reasoning – interprets data to make decisions.
+4. Action – executes decisions to influence outcomes.
+5. Learning – improves performance over time.
+
+Agentic AI:
+Agentic AI refers to systems that exhibit higher-order goal-directed behavior, often executing multi-step tasks independently. These systems can:
+- Plan and adapt based on new information.
+- Use tools like search engines, APIs, or memory.
+- Coordinate with other agents or users to accomplish complex tasks.
+
+Examples of Agentic AI include:
+- Autonomous coding assistants
+- Research agents using RAG (Retrieval-Augmented Generation)
+- Workflow orchestration systems (e.g., CrewAI, LangGraph)
+
+Best Practices for Designing Agentic Systems:
+- Use prompt engineering and memory to maintain context.
+- Equip agents with tool-use abilities (e.g., calculators, web search).
+- Ensure safe and bounded behavior through constraints and feedback loops.

@@ -1,0 +1,7 @@
+An AI agent is a system that perceives its environment through sensors and acts upon that environment using actuators in order to achieve specific goals. In software terms, an AI agent is a program that can autonomously make decisions, reason about situations, and take actions without human intervention.
+
+Agentic AI refers to a class of AI systems that not only make decisions but also exhibit goal-oriented behavior across multiple steps. These agents can plan, adapt, and even collaborate with other agents. They often integrate components like memory, tools, and a feedback loop, making them more autonomous and intelligent.
+
+For example, in modern AI workflows, an agentic system might use retrieval-augmented generation to fetch relevant context before answering a user query, improving accuracy and reliability. Frameworks like LangChain or CrewAI help structure these multi-step agents in production environments.
+
+The goal of Agentic AI is to build systems that aren't just reactive but proactive—anticipating needs, making informed choices, and operating with minimal human input.

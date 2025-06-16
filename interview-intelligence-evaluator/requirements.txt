@@ -1,0 +1,10 @@
+# requirements.txt
+streamlit
+langchain
+openai
+chromadb
+faiss-cpu
+python-dotenv
+PyPDF2
+speechrecognition
+whisper

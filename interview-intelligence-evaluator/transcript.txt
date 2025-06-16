@@ -1,0 +1,7 @@
+Yeah, um, I think the CAP theorem is, like, you know, about choosing two out of three things in distributed systems — consistency, availability, and uh, partition something. So, yeah, it's important in designing systems that are, uh, like scalable.
+
+For example, when building microservices, um, I would, you know, use load balancers to, like, distribute traffic. I think the load balancer helps with availability.
+
+And, uh, yeah, sharding the database helps performance. I’m not exactly sure how eventual consistency works, but it’s used in NoSQL systems, right?
+
+So, I’d say my system design is focused on like, scalability and some redundancy, yeah.
