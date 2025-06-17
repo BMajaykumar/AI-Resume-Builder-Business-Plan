@@ -1,0 +1,8 @@
+Q: What is a REST API?
+A: A REST API is an application programming interface that conforms to the constraints of REST architectural style and allows for interaction with RESTful web services.
+
+Q: What are the differences between GET and POST?
+A: GET requests data from a resource; POST submits data to be processed to a resource.
+
+Q: Explain the React component lifecycle.
+A: The component lifecycle includes mounting, updating, and unmounting phases. Common methods include componentDidMount, componentDidUpdate, and componentWillUnmount.

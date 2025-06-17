@@ -1,0 +1,9 @@
+langchain
+langgraph
+streamlit
+google-generativeai
+chromadb
+openai-whisper
+pydub
+tiktoken
+python-docx
