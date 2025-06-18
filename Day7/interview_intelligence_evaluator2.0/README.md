@@ -31,24 +31,6 @@ Or download [Interview\_Intelligence\_Evaluator.zip](link-to-zip)
 
 ```bash
 pip install -r requirements.txt
-```
-
-### 3️⃣ Install and Setup ffmpeg (Required by Whisper)
-
-* Download: [https://ffmpeg.org/download.html](https://ffmpeg.org/download.html)
-* Add `/bin` to your system PATH.
-
----
-
-## 📁 Directory Structure
-
-```
-Interview_Intelligence_Evaluator/
-├── main.py                     # Main Streamlit App
-├── data/
-│   └── interview_prep_materials/  # Reference documents for Knowledge Validation (Add .txt files here)
-└── README.md
-```
 
 ---
 
@@ -84,48 +66,6 @@ Open browser at: `http://localhost:8501`
 * **Reference Materials for Knowledge Validation**:
 
   * Place `.txt` documents in `data/interview_prep_materials/`
-
----
-
-## 📦 Requirements (Partial)
-
-```txt
-streamlit
-google-generativeai
-openai-whisper
-ffmpeg-python
-sentence-transformers
-faiss-cpu
-```
-
----
-
-## 🖥️ Deployment Ideas
-
-* 📦 Docker (optional)
-* ☁️ Streamlit Community Cloud
-* 🌐 Custom domain hosting (with authentication for sensitive data)
-
----
-
-## 🤝 Contributing
-
-PRs are welcome. For major changes, please open an issue first to discuss what you would like to change.
-
----
-
-## 📜 License
-
-MIT License
-
----
-
-## 🧩 TODOs & Enhancements
-
-* PDF/Markdown Report Export
-* User Authentication (for SaaS)
-* More granular soft skill breakdown
-* Analytics dashboard for multiple interviews
 
 ---
 
