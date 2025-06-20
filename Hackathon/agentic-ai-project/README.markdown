@@ -9,7 +9,7 @@ This project is an AI-driven workflow designed to assist students in generating,
 4. **Opportunity Scoring**: Scores and ranks opportunities based on feasibility, impact, and empathy, with optional survey results.
 5. **Problem Refinement**: Refines the top-ranked opportunity into a concise problem statement and knowledge plan.
 
-##VIDEO LINK (https://drive.google.com/file/d/1BRV7ZlMOccuVUz6wRH_Nxlekb3Zkwx_T/view?usp=sharing)
+## VIDEO LINK (https://drive.google.com/file/d/1BRV7ZlMOccuVUz6wRH_Nxlekb3Zkwx_T/view?usp=sharing)
 
 ## Project Structure
 ```
