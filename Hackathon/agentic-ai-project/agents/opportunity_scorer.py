@@ -1,26 +1,29 @@
 import os
 import logging
+from typing import Dict, List, Optional
+
 from langchain.prompts import PromptTemplate
 from langchain.memory import ConversationBufferMemory
 from langchain_google_genai import GoogleGenerativeAI
-from typing import Dict, List, Optional
+from langchain.agents import Tool, initialize_agent, AgentType
+
 from config import GOOGLE_API_KEY, GEMINI_MODEL
 
-# Set up logging
+# === Logging ===
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-# Initialize memory
+# === Memory ===
 memory = ConversationBufferMemory()
 
-# Initialize Gemini LLM
+# === LLM ===
 try:
     llm = GoogleGenerativeAI(model=GEMINI_MODEL, google_api_key=GOOGLE_API_KEY)
 except Exception as e:
     logger.error(f"Failed to initialize LLM: {e}")
     raise Exception(f"LLM initialization failed: {e}")
 
-# Prompt template for scoring opportunities
+# === Prompt Template ===
 scoring_template = PromptTemplate(
     input_variables=["challenges", "theme", "survey_results"],
     template="""Given challenge-mapped ideas: {challenges}, and theme: {theme}, score each idea based on:
@@ -44,18 +47,16 @@ Format:
   Impact: [score]/100 (Reason: [reason])
   Empathy: [score]/100 (Reason: [reason])
   Total Score: [score]/100
-- Rank 2: [idea]
-  ...
+- Rank 2: ...
 """
 )
 
+# === Main Logic ===
 def score_opportunities(challenges: List[Dict], theme: str, survey_results: Optional[str] = None) -> Dict:
-    """Score and rank challenge-mapped ideas."""
     if not challenges:
         logger.error("No valid challenges provided.")
         return {"error": "No valid challenges provided.", "ranked_opportunities": []}
 
-    # Convert challenges to string
     challenges_str = ""
     for challenge in challenges:
         challenges_str += f"- Idea: {challenge['idea']}\n"
@@ -63,7 +64,6 @@ def score_opportunities(challenges: List[Dict], theme: str, survey_results: Opti
         challenges_str += f"  Affected Users/Stakeholders: {challenge.get('users_stakeholders', 'N/A')}\n"
         challenges_str += f"  Importance: {challenge.get('importance', 'N/A')}\n"
 
-    # Use mock survey results if none provided
     if not survey_results:
         survey_results = "\n".join(
             [f"Idea: {challenge['idea']}, User Rating: {80 if 'Optimize' in challenge['idea'] else 50}/100"
@@ -71,12 +71,10 @@ def score_opportunities(challenges: List[Dict], theme: str, survey_results: Opti
         )
         logger.info("No survey results provided, using mock survey results.")
 
-    logger.info(f"Input to score opportunities: {challenges_str}\nSurvey Results: {survey_results}")
+    logger.info(f"Input to score opportunities:\n{challenges_str}\nSurvey Results:\n{survey_results}")
 
-    # Create chain
     chain = scoring_template | llm
 
-    # Run chain
     try:
         response = chain.invoke({"challenges": challenges_str, "theme": theme, "survey_results": survey_results})
         logger.info(f"Scoring response: {response}")
@@ -87,7 +85,7 @@ def score_opportunities(challenges: List[Dict], theme: str, survey_results: Opti
             "ranked_opportunities": []
         }
 
-    # Parse response
+    # === Parse Response ===
     ranked_opportunities = []
     current_opportunity = {}
     current_rank = None
@@ -116,46 +114,76 @@ def score_opportunities(challenges: List[Dict], theme: str, survey_results: Opti
     if current_rank and current_opportunity:
         ranked_opportunities.append(current_opportunity)
 
-    # Save to memory
     memory.save_context(
         {"input": f"Score opportunities for challenges: {challenges_str}, theme: {theme}, survey: {survey_results}"},
         {"output": response}
     )
 
     return {
-        "ranked_opportunities": ranked_opportunities[:3]  # Ensure only top 3
+        "ranked_opportunities": ranked_opportunities[:3]
     }
 
+# === Tool Wrapper ===
+def score_opportunities_tool(input_text: str) -> str:
+    """
+    Input format:
+    idea1:..., pain_point:..., users:..., importance:...|idea2:..., ...
+    Example: 'theme: agentic AI | idea: X, pain_point: Y, users: Z, importance: A | idea: B, ...'
+    """
+    try:
+        sections = input_text.strip().split("|")
+        theme = sections[0].replace("theme:", "").strip()
+        challenges = []
+        for idea_line in sections[1:]:
+            parts = {kv.split(":")[0].strip(): kv.split(":")[1].strip() for kv in idea_line.split(",")}
+            challenges.append({
+                "idea": parts.get("idea", ""),
+                "pain_point": parts.get("pain_point", ""),
+                "users_stakeholders": parts.get("users", ""),
+                "importance": parts.get("importance", "")
+            })
+        result = score_opportunities(challenges, theme)
+        return "\n\n".join([f"{r['rank']} - {r['idea']}\nScore: {r['total_score']}/100" for r in result["ranked_opportunities"]])
+    except Exception as e:
+        return f"Tool error: {e}"
+
+# === Define the Tool ===
+scorer_tool = Tool(
+    name="OpportunityScorerTool",
+    func=score_opportunities_tool,
+    description=(
+        "Scores and ranks project ideas based on feasibility, impact, empathy. "
+        "Format: 'theme: X | idea: ..., pain_point: ..., users: ..., importance: ... | idea: ...'"
+    )
+)
+
+# === Agent ===
+agent = initialize_agent(
+    tools=[scorer_tool],
+    llm=llm,
+    agent=AgentType.ZERO_SHOT_REACT_DESCRIPTION,
+    memory=memory,
+    verbose=True
+)
+
+# === MAIN ===
 def main():
-    """Test the opportunity scorer."""
-    sample_challenges = [
-        {
-            "idea": "Optimize a process in agentic AI",
-            "pain_point": "High computational costs in agentic AI processes",
-            "users_stakeholders": "Businesses, developers",
-            "importance": "Reducing costs improves scalability."
-        },
-        {
-            "idea": "Explore a agentic AI solution using AI",
-            "pain_point": "Lack of accessible frameworks",
-            "users_stakeholders": "Developers, researchers",
-            "importance": "Simplifies development."
-        },
-        {
-            "idea": "Address a challenge in Computer Science",
-            "pain_point": "N/A",
-            "users_stakeholders": "N/A",
-            "importance": "N/A"
-        }
-    ]
-    sample_theme = "agentic AI"
-    sample_survey_results = """Idea: Optimize a process in agentic AI, User Rating: 85/100
-Idea: Explore a agentic AI solution using AI, User Rating: 60/100
-Idea: Address a challenge in Computer Science, User Rating: 40/100"""
-    
-    result = score_opportunities(sample_challenges, sample_theme, sample_survey_results)
-    print("Ranked Opportunities:", result["ranked_opportunities"])
-    print("\nConversation Memory:", memory.load_memory_variables({}))
+    print("🎯 Opportunity Scorer Agent")
+
+    query = (
+        "theme: agentic AI | "
+        "idea: Optimize a process in agentic AI, pain_point: High cost, users: Developers, importance: Reduce expense | "
+        "idea: Explore agentic AI using AI, pain_point: Framework inaccessibility, users: Researchers, importance: Improve tools | "
+        "idea: Address a challenge in CS, pain_point: N/A, users: N/A, importance: N/A"
+    )
+
+    print("\n🤖 Agent Output:")
+    result = agent.run(query)
+    print(result)
+
+    print("\n🧠 Memory:")
+    print(memory.load_memory_variables({}))
+
 
 if __name__ == "__main__":
     main()
